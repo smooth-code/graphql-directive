@@ -1,4 +1,4 @@
-# graphql-directives
+# graphql-directive
 
 [![Build Status][build-badge]][build]
 [![Code Coverage][coverage-badge]][coverage]
@@ -19,7 +19,7 @@ You can [learn more about directives in GraphQL documentation](http://graphql.or
 ## Install
 
 ```sh
-npm install graphql-directives
+npm install graphql-directive
 ```
 
 ## Steps
@@ -41,7 +41,7 @@ This code defines a directive called `dateFormat` that accepts one argument `for
 The second step consists in adding a resolver for the custom directive.
 
 ```js
-import { addDirectiveResolveFunctionsToSchema } from 'graphql-directives'
+import { addDirectiveResolveFunctionsToSchema } from 'graphql-directive'
 
 // Attach a resolver map to schema
 addDirectiveResolveFunctionsToSchema(schema, {
@@ -75,7 +75,7 @@ graphql(schema, query, rootValue).then(response => {
 `addDirectiveResolveFunctionsToSchema` takes two arguments, a GraphQLSchema and a resolver map. It modifies the schema in place by attaching directive resolvers. Internally your resolvers are wrapped into another one.
 
 ```js
-import { addDirectiveResolveFunctionsToSchema } from 'graphql-directives'
+import { addDirectiveResolveFunctionsToSchema } from 'graphql-directive'
 
 const resolverMap = {
   // Will be called when a @upperCase directive is applied to a field.
@@ -113,7 +113,7 @@ Text formatting is a good use case for directives. It can be helpful to directly
 
 ```js
 import { buildSchema } from 'graphql'
-import { addDirectiveResolveFunctionsToSchema } from 'graphql-directives'
+import { addDirectiveResolveFunctionsToSchema } from 'graphql-directive'
 
 // Schema
 const schema = buildSchema(`
@@ -129,7 +129,7 @@ addDirectiveResolveFunctionsToSchema(schema, {
 })
 ```
 
-[See complete example](https://github.com/smooth-code/graphql-directives/blob/master/examples/upperCase.js)
+[See complete example](https://github.com/smooth-code/graphql-directive/blob/master/examples/upperCase.js)
 
 ### Date formatting: `@dateFormat(format: String)`
 
@@ -137,7 +137,7 @@ Date formatting is a CPU expensive operation. Since all directives are resolved 
 
 ```js
 import { buildSchema } from 'graphql'
-import { addDirectiveResolveFunctionsToSchema } from 'graphql-directives'
+import { addDirectiveResolveFunctionsToSchema } from 'graphql-directive'
 import format from 'date-fns/format'
 
 // Schema
@@ -154,7 +154,7 @@ addDirectiveResolveFunctionsToSchema(schema, {
 })
 ```
 
-[See complete example](https://github.com/smooth-code/graphql-directives/blob/master/examples/dateFormat.js)
+[See complete example](https://github.com/smooth-code/graphql-directive/blob/master/examples/dateFormat.js)
 
 ### Authentication: `@requireAuth`
 
@@ -162,7 +162,7 @@ Authentication is a very good usage of `FIELD_DEFINITION` directives. By using a
 
 ```js
 import { buildSchema } from 'graphql'
-import { addDirectiveResolveFunctionsToSchema } from 'graphql-directives'
+import { addDirectiveResolveFunctionsToSchema } from 'graphql-directive'
 
 // Schema
 const schema = buildSchema(`
@@ -179,7 +179,7 @@ addDirectiveResolveFunctionsToSchema(schema, {
 })
 ```
 
-[See complete example](https://github.com/smooth-code/graphql-directives/blob/master/examples/requireAuth.js)
+[See complete example](https://github.com/smooth-code/graphql-directive/blob/master/examples/requireAuth.js)
 
 ## Limitations
 
@@ -195,11 +195,11 @@ addDirectiveResolveFunctionsToSchema(schema, {
 
 MIT
 
-[build-badge]: https://img.shields.io/travis/smooth-code/graphql-directives.svg?style=flat-square
-[build]: https://travis-ci.org/smooth-code/graphql-directives
-[coverage-badge]: https://img.shields.io/codecov/c/github/smooth-code/graphql-directives.svg?style=flat-square
-[coverage]: https://codecov.io/github/smooth-code/graphql-directives
-[version-badge]: https://img.shields.io/npm/v/graphql-directives.svg?style=flat-square
-[package]: https://www.npmjs.com/package/graphql-directives
-[license-badge]: https://img.shields.io/npm/l/graphql-directives.svg?style=flat-square
-[license]: https://github.com/smooth-code/graphql-directives/blob/master/LICENSE
+[build-badge]: https://img.shields.io/travis/smooth-code/graphql-directive.svg?style=flat-square
+[build]: https://travis-ci.org/smooth-code/graphql-directive
+[coverage-badge]: https://img.shields.io/codecov/c/github/smooth-code/graphql-directive.svg?style=flat-square
+[coverage]: https://codecov.io/github/smooth-code/graphql-directive
+[version-badge]: https://img.shields.io/npm/v/graphql-directive.svg?style=flat-square
+[package]: https://www.npmjs.com/package/graphql-directive
+[license-badge]: https://img.shields.io/npm/l/graphql-directive.svg?style=flat-square
+[license]: https://github.com/smooth-code/graphql-directive/blob/master/LICENSE
