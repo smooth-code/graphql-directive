@@ -21,6 +21,13 @@
     "release": "yarn build && standard-version && conventional-github-releaser -p angular",
     "test": "jest --runInBand --coverage && codecov"
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/lib/**",
+      "!**/node_modules/**"
+    ]
+  },
   "peerDependencies": {
     "graphql": "^0.11.0"
   },
