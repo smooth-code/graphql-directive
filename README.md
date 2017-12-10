@@ -184,7 +184,7 @@ addDirectiveResolveFunctionsToSchema(schema, {
 ## Limitations
 
 * `FIELD` and `FIELD_DEFINITION` are the only two supported locations
-* [Apollo InMemoryCache](https://www.apollographql.com/docs/react/basics/caching.html) doesn't support custom directives yet. **Be careful: using custom directives in your queries can corrupt your cache.**
+* [Apollo InMemoryCache](https://www.apollographql.com/docs/react/basics/caching.html) doesn't support custom directives yet. **Be careful: using custom directives in your queries can corrupt your cache.** [A PR is waiting to be merged to fix it](https://github.com/apollographql/apollo-client/pull/2710).
 
 ## Inspiration
 
