@@ -24,7 +24,7 @@
   "jest": {
     "collectCoverageFrom": [
       "**/*.js",
-      "!/**/.eslintrc.js",
+      "!**/.eslintrc.js",
       "!**/lib/**",
       "!**/examples/**",
       "!**/node_modules/**"
