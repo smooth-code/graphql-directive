@@ -3,6 +3,8 @@ import { defaultFieldResolver } from 'graphql'
 import { DirectiveLocation } from 'graphql/type'
 import { getArgumentValues } from 'graphql/execution/values'
 
+const BUILT_IN_DIRECTIVES = ['deprecated', 'skip', 'include']
+
 function getFieldResolver(field) {
   const resolver = field.resolve || defaultFieldResolver
   return resolver.bind(field)
@@ -33,7 +35,7 @@ function getDirectiveInfo(directive, resolverMap, schema, location) {
   }
 
   const resolver = resolverMap[name]
-  if (!resolver) {
+  if (!resolver && !BUILT_IN_DIRECTIVES.includes(name)) {
     throw new Error(
       `Directive @${name} has no resolver.` +
         'Please define one using createFieldExecutionResolver().',

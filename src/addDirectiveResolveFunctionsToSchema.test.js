@@ -175,6 +175,21 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
       }
     })
 
+    it('should not throw an error if resolver is a built-in one', async () => {
+      const typeDefs = /* GraphQL */ `
+        type Query {
+          foo: String @deprecated
+        }
+      `
+      const resolvers = {
+        Query: {
+          foo: () => 'foo',
+        },
+      }
+      const schema = makeExecutableSchema({ typeDefs, resolvers })
+      addDirectiveResolveFunctionsToSchema(schema, {})
+    })
+
     it('should work without directive', async () => {
       const query = /* GraphQL */ `{ foo }`
       const data = await run(schema, query)
