@@ -1,7 +1,11 @@
 import { forEachField } from 'graphql-tools'
 import { defaultFieldResolver } from 'graphql'
-import { DirectiveLocation } from 'graphql/type'
-import { getArgumentValues } from 'graphql/execution/values'
+import * as graphqlLanguage from 'graphql/language'
+import * as graphqlType from 'graphql/type'
+import { getDirectiveValues } from 'graphql/execution'
+
+const DirectiveLocation =
+  graphqlLanguage.DirectiveLocation || graphqlType.DirectiveLocation
 
 const BUILT_IN_DIRECTIVES = ['deprecated', 'skip', 'include']
 
@@ -42,7 +46,7 @@ function getDirectiveInfo(directive, resolverMap, schema, location) {
     )
   }
 
-  const args = getArgumentValues(Directive, directive)
+  const args = getDirectiveValues(Directive, { directives: [directive] })
   return { args, resolver }
 }
 
