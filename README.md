@@ -5,7 +5,7 @@
 [![version][version-badge]][package]
 [![MIT License][license-badge]][license]
 
-GraphQL supports several directives: `@include`, `@skip` et `@deprecated`. This module opens a new dimension by giving you the possibility to define your custom directives.
+GraphQL supports [several directives](http://facebook.github.io/graphql/October2016/#sec-Type-System.Directives): `@include`, `@skip` and `@deprecated`. This module opens a new dimension by giving you the possibility to define your custom directives.
 
 Custom directives have a lot of use-cases:
 
