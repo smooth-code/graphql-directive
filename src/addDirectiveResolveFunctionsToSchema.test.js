@@ -1,10 +1,11 @@
 /* eslint-disable no-shadow */
+import url from 'url';
 import { makeExecutableSchema } from 'graphql-tools'
 import { graphql } from 'graphql'
 import { addDirectiveResolveFunctionsToSchema } from './'
 
-const run = async (schema, query, context) => {
-  const { data, errors } = await graphql(schema, query, null, context)
+const run = async (schema, query, context, variables) => {
+  const { data, errors } = await graphql(schema, query, null, context, variables)
   if (errors && errors.length) {
     /* eslint-disable no-console */
     console.error(errors)
@@ -77,6 +78,7 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
         getFieldName(resolve, source, directiveArgs, context, info) {
           return info.fieldName
         },
+
       }
 
       schema = makeExecutableSchema({ typeDefs, resolvers })
@@ -260,6 +262,7 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
         directive @prefixWithId on FIELD
         directive @getContextKey(key: String!) on FIELD
         directive @getFieldName on FIELD
+        directive @url(root: String!) on FIELD
 
         type Query {
           foo: String
@@ -303,6 +306,9 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
         },
         getFieldName(resolve, source, directiveArgs, context, info) {
           return info.fieldName
+        },
+        async url(resolve, source, directiveArgs) {
+          return url.resolve(directiveArgs.root, await resolve())
         },
       }
 
@@ -390,6 +396,12 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
       const query = /* GraphQL */ `{ foo @getFieldName }`
       const data = await run(schema, query)
       expect(data).toEqual({ foo: 'foo' })
+    })
+
+    it('should support query variables binding', async () => {
+      const query = /* GraphQL */ `query($url: String!) { foo @url(root:$url) }`
+      const data = await run(schema, query, null, { url: '/root/url/' })
+      expect(data).toEqual({ foo: '/root/url/foo' })
     })
   })
 })
