@@ -122,9 +122,9 @@ const schema = buildSchema(`
 
 // Resolver
 addDirectiveResolveFunctionsToSchema(schema, {
-  async dateFormat(resolve, source, args) {
+  async upperCase(resolve) {
     const value = await resolve()
-    return format(new Date(value), args.format)
+    return value.toUpperCase()
   },
 })
 ```
