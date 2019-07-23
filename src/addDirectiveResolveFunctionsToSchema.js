@@ -24,17 +24,11 @@ function getDirectiveInfo(directive, resolverMap, schema, location, variables) {
   const name = directive.name.value
 
   const Directive = schema.getDirective(name)
-  if (typeof Directive === 'undefined') {
-    throw new Error(
-      `Directive @${name} is undefined. ` +
-      'Please define in schema before using.',
-    )
-  }
 
   if (!Directive.locations.includes(location)) {
     throw new Error(
       `Directive @${name} is not marked to be used on "${location}" location. ` +
-      `Please add "directive @${name} ON ${location}" in schema.`,
+        `Please add "directive @${name} ON ${location}" in schema.`,
     )
   }
 
@@ -42,11 +36,15 @@ function getDirectiveInfo(directive, resolverMap, schema, location, variables) {
   if (!resolver && !BUILT_IN_DIRECTIVES.includes(name)) {
     throw new Error(
       `Directive @${name} has no resolver.` +
-      'Please define one using createFieldExecutionResolver().',
+        'Please define one using createFieldExecutionResolver().',
     )
   }
 
-  const args = getDirectiveValues(Directive, { directives: [directive] }, variables)
+  const args = getDirectiveValues(
+    Directive,
+    { directives: [directive] },
+    variables,
+  )
   return { args, resolver }
 }
 
@@ -60,13 +58,14 @@ function createFieldExecutionResolver(field, resolverMap, schema) {
       schema,
       DirectiveLocation.FIELD_DEFINITION,
     )
-    return (source, args, context, info) => directiveInfo.resolver(
-      () => recursiveResolver(source, args, context, info),
-      source,
-      directiveInfo.args,
-      context,
-      info,
-    )
+    return (source, args, context, info) =>
+      directiveInfo.resolver(
+        () => recursiveResolver(source, args, context, info),
+        source,
+        directiveInfo.args,
+        context,
+        info,
+      )
   }, createAsyncResolver(field))
 }
 

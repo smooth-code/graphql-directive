@@ -1,11 +1,17 @@
 /* eslint-disable no-shadow */
-import url from 'url';
+import url from 'url'
 import { makeExecutableSchema } from 'graphql-tools'
 import { graphql } from 'graphql'
-import { addDirectiveResolveFunctionsToSchema } from './'
+import { addDirectiveResolveFunctionsToSchema } from '.'
 
 const run = async (schema, query, context, variables) => {
-  const { data, errors } = await graphql(schema, query, null, context, variables)
+  const { data, errors } = await graphql(
+    schema,
+    query,
+    null,
+    context,
+    variables,
+  )
   if (errors && errors.length) {
     /* eslint-disable no-console */
     console.error(errors)
@@ -78,7 +84,6 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
         getFieldName(resolve, source, directiveArgs, context, info) {
           return info.fieldName
         },
-
       }
 
       schema = makeExecutableSchema({ typeDefs, resolvers })
@@ -97,13 +102,11 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
           foo: () => 'foo',
         },
       }
-      const schema = makeExecutableSchema({ typeDefs, resolvers })
       try {
+        const schema = makeExecutableSchema({ typeDefs, resolvers })
         addDirectiveResolveFunctionsToSchema(schema, {})
       } catch (error) {
-        expect(error.message).toBe(
-          'Directive @foo is undefined. Please define in schema before using.',
-        )
+        expect(error.message).toBe('Unknown directive "foo".')
       }
     })
 
@@ -143,12 +146,12 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
           foo: () => 'foo',
         },
       }
-      const schema = makeExecutableSchema({ typeDefs, resolvers })
       try {
+        const schema = makeExecutableSchema({ typeDefs, resolvers })
         addDirectiveResolveFunctionsToSchema(schema, {})
       } catch (error) {
         expect(error.message).toBe(
-          'Directive @foo is not marked to be used on "FIELD_DEFINITION" location. Please add "directive @foo ON FIELD_DEFINITION" in schema.',
+          'Directive "foo" may not be used on FIELD_DEFINITION.',
         )
       }
     })
@@ -193,32 +196,52 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
     })
 
     it('should work without directive', async () => {
-      const query = /* GraphQL */ `{ foo }`
+      const query = /* GraphQL */ `
+        {
+          foo
+        }
+      `
       const data = await run(schema, query)
       expect(data).toEqual({ foo: 'foo' })
     })
 
     it('should work with synchronous resolver', async () => {
-      const query = /* GraphQL */ `{ upperCaseFoo } `
+      const query = /* GraphQL */ `
+        {
+          upperCaseFoo
+        }
+      `
       const data = await run(schema, query)
       expect(data).toEqual({ upperCaseFoo: 'FOO' })
     })
 
     it('should work with asynchronous resolver', async () => {
-      const query = /* GraphQL */ `{ asyncUpperCaseFoo }`
+      const query = /* GraphQL */ `
+        {
+          asyncUpperCaseFoo
+        }
+      `
       const data = await run(schema, query)
       expect(data).toEqual({ asyncUpperCaseFoo: 'FOO' })
     })
 
     it('should accept directive arguments', async () => {
-      const query = /* GraphQL */ `{ substrFoo }`
+      const query = /* GraphQL */ `
+        {
+          substrFoo
+        }
+      `
 
       const data = await run(schema, query)
       expect(data).toEqual({ substrFoo: 'oo' })
     })
 
     it('should be accept several directives', async () => {
-      const query = /* GraphQL */ `{ substrUppercaseFoo }`
+      const query = /* GraphQL */ `
+        {
+          substrUppercaseFoo
+        }
+      `
       const data = await run(schema, query)
       expect(data).toEqual({ substrUppercaseFoo: 'OO' })
     })
@@ -240,13 +263,21 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
     })
 
     it('should support context', async () => {
-      const query = /* GraphQL */ `{ version }`
+      const query = /* GraphQL */ `
+        {
+          version
+        }
+      `
       const data = await run(schema, query, { version: '1.0' })
       expect(data).toEqual({ version: '1.0' })
     })
 
     it('should support info', async () => {
-      const query = /* GraphQL */ `{ nameOfField }`
+      const query = /* GraphQL */ `
+        {
+          nameOfField
+        }
+      `
       const data = await run(schema, query)
       expect(data).toEqual({ nameOfField: 'nameOfField' })
     })
@@ -330,7 +361,11 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
         },
       }
       const schema = makeExecutableSchema({ typeDefs, resolvers })
-      const query = /* GraphQL */ `{ foo @foo } `
+      const query = /* GraphQL */ `
+        {
+          foo @foo
+        }
+      `
       addDirectiveResolveFunctionsToSchema(schema, {})
       const { errors } = await graphql(schema, query)
       expect(errors.length).toBe(1)
@@ -340,32 +375,52 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
     })
 
     it('should work without directive', async () => {
-      const query = /* GraphQL */ `{ foo }`
+      const query = /* GraphQL */ `
+        {
+          foo
+        }
+      `
       const data = await run(schema, query)
       expect(data).toEqual({ foo: 'foo' })
     })
 
     it('should work with synchronous resolver', async () => {
-      const query = /* GraphQL */ `{ foo @upperCase } `
+      const query = /* GraphQL */ `
+        {
+          foo @upperCase
+        }
+      `
       const data = await run(schema, query)
       expect(data).toEqual({ foo: 'FOO' })
     })
 
     it('should work with asynchronous resolver', async () => {
-      const query = /* GraphQL */ `{ asyncFoo @upperCase }`
+      const query = /* GraphQL */ `
+        {
+          asyncFoo @upperCase
+        }
+      `
       const data = await run(schema, query)
       expect(data).toEqual({ asyncFoo: 'FOO' })
     })
 
     it('should accept directive arguments', async () => {
-      const query = /* GraphQL */ `{ foo @substr(start: 1, end: 2) }`
+      const query = /* GraphQL */ `
+        {
+          foo @substr(start: 1, end: 2)
+        }
+      `
 
       const data = await run(schema, query)
       expect(data).toEqual({ foo: 'oo' })
     })
 
     it('should be accept several directives', async () => {
-      const query = /* GraphQL */ `{ foo @substr(start: 1, end: 2) @upperCase }`
+      const query = /* GraphQL */ `
+        {
+          foo @substr(start: 1, end: 2) @upperCase
+        }
+      `
       const data = await run(schema, query)
       expect(data).toEqual({ foo: 'OO' })
     })
@@ -387,19 +442,31 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
     })
 
     it('should support context', async () => {
-      const query = /* GraphQL */ `{ foo @getContextKey(key: "version") }`
+      const query = /* GraphQL */ `
+        {
+          foo @getContextKey(key: "version")
+        }
+      `
       const data = await run(schema, query, { version: '1.0' })
       expect(data).toEqual({ foo: '1.0' })
     })
 
     it('should support info', async () => {
-      const query = /* GraphQL */ `{ foo @getFieldName }`
+      const query = /* GraphQL */ `
+        {
+          foo @getFieldName
+        }
+      `
       const data = await run(schema, query)
       expect(data).toEqual({ foo: 'foo' })
     })
 
     it('should support query variables binding', async () => {
-      const query = /* GraphQL */ `query($url: String!) { foo @url(root:$url) }`
+      const query = /* GraphQL */ `
+        query($url: String!) {
+          foo @url(root: $url)
+        }
+      `
       const data = await run(schema, query, null, { url: '/root/url/' })
       expect(data).toEqual({ foo: '/root/url/foo' })
     })

@@ -9,10 +9,10 @@ GraphQL supports [several directives](http://facebook.github.io/graphql/October2
 
 Custom directives have a lot of use-cases:
 
-* Formatting
-* Authentication
-* Introspection
-* ...
+- Formatting
+- Authentication
+- Introspection
+- ...
 
 You can [learn more about directives in GraphQL documentation](http://graphql.org/learn/queries/#directives).
 
@@ -183,13 +183,13 @@ addDirectiveResolveFunctionsToSchema(schema, {
 
 ## Limitations
 
-* `FIELD` and `FIELD_DEFINITION` are the only two supported locations
-* [Apollo InMemoryCache](https://www.apollographql.com/docs/react/basics/caching.html) doesn't support custom directives yet. **Be careful: using custom directives in your queries can corrupt your cache.** [A PR is waiting to be merged to fix it](https://github.com/apollographql/apollo-client/pull/2710).
+- `FIELD` and `FIELD_DEFINITION` are the only two supported locations
+- [Apollo InMemoryCache](https://www.apollographql.com/docs/react/basics/caching.html) doesn't support custom directives yet. **Be careful: using custom directives in your queries can corrupt your cache.** [A PR is waiting to be merged to fix it](https://github.com/apollographql/apollo-client/pull/2710).
 
 ## Inspiration
 
-* https://github.com/apollographql/graphql-tools/pull/518
-* [graphql-custom-directive](https://github.com/lirown/graphql-custom-directive)
+- https://github.com/apollographql/graphql-tools/pull/518
+- [graphql-custom-directive](https://github.com/lirown/graphql-custom-directive)
 
 ## License
 

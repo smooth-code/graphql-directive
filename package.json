@@ -15,7 +15,7 @@
   "scripts": {
     "build": "rm -rf lib/ && NODE_ENV=production babel src -d lib --ignore \"*.test.js\"",
     "ci": "./scripts/ci.sh",
-    "format": "prettier --write \"src/**/*.js\"",
+    "format": "prettier --write \"**/*.{js,md,json}\"",
     "lint": "eslint .",
     "prepublishOnly": "yarn build",
     "release": "yarn build && standard-version && conventional-github-releaser -p angular",
@@ -31,29 +31,27 @@
     ]
   },
   "peerDependencies": {
-    "graphql": "^0.11.0 || ^0.12.0"
+    "graphql": "^0.14.0"
   },
   "dependencies": {
-    "graphql-tools": "^2.21.0"
+    "graphql-tools": "^4.0.5"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.2.2",
-    "babel-jest": "^22.4.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "codecov": "^3.0.0",
-    "conventional-github-releaser": "^2.0.0",
-    "date-fns": "^1.29.0",
-    "eslint": "^4.18.1",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-import": "^2.9.0",
-    "graphql": "^0.13.1",
-    "jest": "^22.4.0",
-    "prettier": "^1.10.2",
-    "standard-version": "^4.3.0"
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-eslint": "^10.0.2",
+    "codecov": "^3.5.0",
+    "conventional-github-releaser": "^3.1.3",
+    "date-fns": "^1.30.1",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "graphql": "^14.4.2",
+    "jest": "^24.8.0",
+    "prettier": "^1.18.2",
+    "standard-version": "^6.0.1"
   }
 }
