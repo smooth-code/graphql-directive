@@ -39,7 +39,7 @@ function getDirectiveInfo(directive, resolverMap, schema, location, variables) {
   }
 
   const resolver = resolverMap[name]
-  if (!resolver && !BUILT_IN_DIRECTIVES.includes(name)) {
+  if (!resolver) {
     throw new Error(
       `Directive @${name} has no resolver.` +
       'Please define one using createFieldExecutionResolver().',
@@ -50,8 +50,12 @@ function getDirectiveInfo(directive, resolverMap, schema, location, variables) {
   return { args, resolver }
 }
 
+function filterCustomDirectives(directives) {
+  return directives.filter(directive => !BUILT_IN_DIRECTIVES.includes(directive.name.value))
+}
+
 function createFieldExecutionResolver(field, resolverMap, schema) {
-  const { directives } = field.astNode
+  const directives = filterCustomDirectives(field.astNode.directives)
   if (!directives.length) return getFieldResolver(field)
   return directives.reduce((recursiveResolver, directive) => {
     const directiveInfo = getDirectiveInfo(
@@ -74,7 +78,7 @@ function createFieldResolver(field, resolverMap, schema) {
   const originalResolver = getFieldResolver(field)
   const asyncResolver = createAsyncResolver(field)
   return (source, args, context, info) => {
-    const { directives } = info.fieldNodes[0]
+    const directives = filterCustomDirectives(info.fieldNodes[0].directives)
     if (!directives.length) return originalResolver(source, args, context, info)
     const fieldResolver = directives.reduce((recursiveResolver, directive) => {
       const directiveInfo = getDirectiveInfo(
