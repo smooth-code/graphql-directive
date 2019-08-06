@@ -177,7 +177,7 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
       }
     })
 
-    it('should not throw an error if resolver is a built-in one', async () => {
+    it('should not throw an error if resolver is a built-in schema directive', async () => {
       const typeDefs = /* GraphQL */ `
         type Query {
           foo: String @deprecated
@@ -190,6 +190,31 @@ describe('addDirectiveResolveFunctionsToSchema', () => {
       }
       const schema = makeExecutableSchema({ typeDefs, resolvers })
       addDirectiveResolveFunctionsToSchema(schema, {})
+
+      const query = /* GraphQL */ `{ foo }`
+
+      expect(await run(schema, query)).toEqual({ foo: 'foo' })
+    })
+
+    it('should not throw an error if resolver is a built-in query directive', async () => {
+      const typeDefs = /* GraphQL */ `
+        type Query {
+          foo: String
+        }
+      `
+      const resolvers = {
+        Query: {
+          foo: () => 'foo',
+        },
+      }
+      const schema = makeExecutableSchema({ typeDefs, resolvers })
+      addDirectiveResolveFunctionsToSchema(schema, {})
+
+      const query = /* GraphQL */ `{
+        foo @include(if: true)
+      }`
+
+      expect(await run(schema, query)).toEqual({ foo: 'foo' })
     })
 
     it('should work without directive', async () => {
